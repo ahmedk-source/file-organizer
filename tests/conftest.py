@@ -12,9 +12,21 @@ from file_organizer import Journal, Organizer, Plan, Settings, resolve_settings
 
 @pytest.fixture(autouse=True)
 def isolated_environment(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    """Keep every test hermetic: no real Downloads folder, no real journal."""
+    """Keep every test hermetic: no real Downloads folder, no real journal.
+
+    ``Path.home()`` is redirected to an empty folder so a developer's
+    personal ``~/.file-organizer.toml`` can never influence test results.
+    """
     state = tmp_path / "state"
+    fake_home = tmp_path / "home"
+    fake_home.mkdir()
+
+    def _fake_home(cls: type[Path]) -> Path:
+        return fake_home
+
     monkeypatch.setenv("FILE_ORGANIZER_STATE_DIR", str(state))
+    monkeypatch.setenv("HOME", str(fake_home))
+    monkeypatch.setattr(Path, "home", classmethod(_fake_home))
     monkeypatch.chdir(tmp_path)
     return state
 
