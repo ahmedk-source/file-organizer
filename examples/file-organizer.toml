@@ -1,0 +1,57 @@
+# Example configuration for file-organizer.
+#
+# Copy this file to `file-organizer.toml` next to the folder you run the tool
+# from, or pass it explicitly with `--config path/to/file-organizer.toml`.
+#
+# Everything here is optional; the built-in defaults are shown as comments.
+
+[general]
+
+# Folder to sort. `~` and environment variables are expanded.
+# Default: the current user's Downloads folder.
+# source = "~/Downloads"
+
+# Folder that receives the category sub-folders. A relative path is resolved
+# against the source folder, so "Sorted" means "<source>/Sorted".
+# Default: "Sorted"
+# destination = "Sorted"
+
+# Also sort files that live inside sub-folders of the source.
+# Default: false
+# recursive = false
+
+# What to do when the destination already contains a file with that name:
+#   rename    -> keep both files, adding " (1)", " (2)", ...
+#   skip      -> leave the incoming file where it is
+#   overwrite -> replace the existing file (the old file is not recoverable)
+# Default: "rename"
+# on_conflict = "rename"
+
+# Leave dot-files (and files marked hidden on Windows) untouched.
+# Default: true
+# skip_hidden = true
+
+# Move symbolic links themselves instead of skipping them.
+# Default: false
+# follow_symlinks = false
+
+# Category used for extensions that no rule claims.
+# Default: "Other"
+# default_category = "Other"
+
+# When true, the built-in categories are discarded and only the [categories]
+# below are used. Useful if you want a completely custom taxonomy.
+# Default: false
+# replace_default_categories = false
+
+[categories]
+
+# Add new categories. Extensions may be written with or without the leading
+# dot and are case-insensitive.
+Design = [".fig", ".sketch", ".xd"]
+Ebooks = [".epub", ".mobi", ".azw3"]
+Data = [".parquet", ".feather", ".sqlite"]
+
+# Assigning an extension that already has a built-in owner moves it to the
+# new category. Here `.pdf` leaves the built-in "PDF" category.
+Paperwork = [".pdf"]
