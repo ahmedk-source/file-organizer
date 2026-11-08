@@ -58,11 +58,11 @@ def is_hidden(path: Path) -> bool:
     """Return ``True`` for dot-files and Windows hidden files."""
     if path.name.startswith("."):
         return True
-    if sys.platform != "win32":
-        return False
     try:
-        attributes = getattr(path.stat(), "st_file_attributes", 0)
+        attributes = getattr(path.stat(), "st_file_attributes", None)
     except OSError:
+        return False
+    if attributes is None:
         return False
     hidden_flag = getattr(stat, "FILE_ATTRIBUTE_HIDDEN", 0x2)
     return bool(attributes & hidden_flag)
